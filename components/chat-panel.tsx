@@ -5,6 +5,7 @@ import { PromptForm } from '@/components/prompt-form'
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
 import { IconRefresh, IconStop } from '@/components/ui/icons'
 import { FooterText } from '@/components/footer'
+import { MutableRefObject } from 'react'
 
 export interface ChatPanelProps
   extends Pick<
@@ -18,6 +19,7 @@ export interface ChatPanelProps
     | 'setInput'
   > {
   id?: string
+  finishCallbackRef: MutableRefObject<() => void>
 }
 
 export function ChatPanel({
@@ -28,7 +30,8 @@ export function ChatPanel({
   reload,
   input,
   setInput,
-  messages
+  messages,
+  finishCallbackRef
 }: ChatPanelProps) {
   return (
     <div className="fixed inset-x-0 bottom-0 bg-gradient-to-b from-muted/10 from-10% to-muted/30 to-50%">
@@ -69,6 +72,7 @@ export function ChatPanel({
             input={input}
             setInput={setInput}
             isLoading={isLoading}
+            finishCallbackRef={finishCallbackRef}
           />
           <FooterText className="hidden sm:block" />
         </div>

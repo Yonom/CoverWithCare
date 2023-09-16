@@ -1,9 +1,14 @@
 type AssemblyAiParams = {
   onInput: (text: string) => void
   onInputComplete: (text: string) => void
+  onRecordingStatusChange: (paused: boolean) => void
 }
 
-const assemblyAi = ({ onInput, onInputComplete }: AssemblyAiParams) => {
+const assemblyAi = ({
+  onInput,
+  onInputComplete,
+  onRecordingStatusChange
+}: AssemblyAiParams) => {
   let socket: WebSocket
 
   const setupSocket = async () => {
@@ -45,10 +50,14 @@ const assemblyAi = ({ onInput, onInputComplete }: AssemblyAiParams) => {
 
   let started = false
   let paused = true
+  const setPaused = (paused: boolean) => {
+    if (paused === paused) return
+    paused = paused
+    onRecordingStatusChange(paused)
+  }
   return {
-    getIsPaused: () => paused,
     startRecording: async () => {
-      paused = false
+      setPaused(false)
 
       if (started) {
         return
@@ -92,7 +101,7 @@ const assemblyAi = ({ onInput, onInputComplete }: AssemblyAiParams) => {
       recorder.startRecording()
     },
     pauseRecording: () => {
-      paused = true
+      setPaused(true)
     }
   }
 }
@@ -102,11 +111,13 @@ const messageRepetitionThreshold = 500
 type AssemblyAiListenerParams = {
   onInput: (text: string) => void
   onInputComplete: (text: string) => void
+  onRecordingStatusChange: (paused: boolean) => void
 }
 
 export const assemblyAiListener = ({
   onInput,
-  onInputComplete
+  onInputComplete,
+  onRecordingStatusChange
 }: AssemblyAiListenerParams) => {
   let buffer = ''
 
@@ -142,7 +153,8 @@ export const assemblyAiListener = ({
     onInput: inputHandler,
     onInputComplete: text => {
       buffer = inputHandler(text)
-    }
+    },
+    onRecordingStatusChange: onRecordingStatusChange
   })
   return recorder
 }

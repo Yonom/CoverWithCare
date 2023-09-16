@@ -38,7 +38,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW)
   const [previewTokenInput, setPreviewTokenInput] = useState(previewToken ?? '')
 
-  const finishCallback = useRef(() => {})
+  const finishCallbackRef = useRef(() => {})
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
       initialMessages,
@@ -53,26 +53,10 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         }
       },
       async onFinish(m) {
-        await playText(m.content)
-        finishCallback.current()
+        // await playText(m.content)
+        finishCallbackRef.current()
       }
     })
-
-  const recorderRef = useRef<any>()
-  useEffect(() => {
-    if (recorderRef.current) return
-    const recorder = (recorderRef.current = assemblyAiListener({
-      onInput: t => setInput(t),
-      onInputComplete: async t => {
-        setInput('')
-        await append({ id, content: t, role: 'user' })
-        await new Promise<void>(r => {
-          finishCallback.current = r
-        })
-      }
-    }))
-    recorder.startRecording()
-  }, [])
 
   return (
     <>
@@ -96,6 +80,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         messages={messages}
         input={input}
         setInput={setInput}
+        finishCallbackRef={finishCallbackRef}
       />
 
       <Dialog open={previewTokenDialog} onOpenChange={setPreviewTokenDialog}>
