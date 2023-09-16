@@ -28,10 +28,16 @@ import { CreateMessage } from 'ai'
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
+  initialCoachMessages: Message[]
   id?: string
 }
 
-export function Chat({ id, initialMessages, className }: ChatProps) {
+export function Chat({
+  id,
+  initialMessages,
+  initialCoachMessages,
+  className
+}: ChatProps) {
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
     'ai-token',
     null
@@ -61,17 +67,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     })
 
   const coachChat = useChat({
-    initialMessages: [
-      {
-        id: 's1',
-        role: 'system',
-        content: `You listen to a chat between a customer of an insurance company "Zurich Insurance" and an Insurance Advisor - an employee of this company, who is training to be more empathetic and understanding towards customers. Please give feedback on their responses to customers in the following format.
-
-Score:
-Feedback:
-Try This Instead:`
-      }
-    ],
+    initialMessages: initialCoachMessages,
     async onFinish(m) {
       // await playText(m.content)
       finishCallbackRef.current()

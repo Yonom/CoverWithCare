@@ -26,9 +26,6 @@ export function ChatMessageActions({
       )}
       {...props}
     >
-      {!!coachMessage && (
-        <div className="border border-red-500 p-2">{coachMessage.content}</div>
-      )}
     </div>
   )
 }
