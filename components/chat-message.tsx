@@ -40,7 +40,7 @@ export function ChatMessage({
               : 'bg-background text-primary-foreground icon-radius'
           )}
         >
-          {message.role === 'user' ? <IconUser /> : <IconOpenAI />}
+            {message.role === 'user' ? <IconUser /> : <div/>}
         </div>
         <div
           className="flex-1 px-1 ml-4 space-y-2 overflow-hidden"
@@ -56,7 +56,7 @@ export function ChatMessage({
             components={{
               p({ children }) {
                 return (
-                  <p className="mb-2 last:mb-0" style={{ color: '#FFFFFF' }}>
+                  <p className="mb-2 last:mb-0">
                     {children}
                   </p>
                 )
@@ -100,6 +100,10 @@ export function ChatMessage({
               .replace('Customer: ', '')}
           </MemoizedReactMarkdown>
           <ChatMessageActions message={message} coachMessage={coachMessage} />
+        </div>
+
+        <div>
+          {message.role === 'user' ? <div /> : <IconOpenAI />}
         </div>
       </div>
 
