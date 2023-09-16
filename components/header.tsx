@@ -33,7 +33,6 @@ export async function Header() {
         ) : (
           <Link href="/" target="_blank" rel="nofollow">
             <IconNextChat className="w-6 h-6 mr-2 dark:hidden" inverted />
-            <IconNextChat className="hidden w-6 h-6 mr-2 dark:block" />
           </Link>
         )}
         <div className="flex items-center">
