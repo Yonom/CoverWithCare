@@ -43,7 +43,7 @@ export function ChatMessage({
         <div
           className="flex-1 px-1 ml-4 space-y-2 overflow-hidden"
           style={{
-            background: '#A0D3EC',
+            background: message.role === 'user' ? '#A0D3EC' : '#c8e5f4',
             padding: '10px 0px 10px 10px',
             borderRadius: '0.5rem'
           }}
