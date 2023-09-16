@@ -9,12 +9,12 @@ import { cn } from '@/lib/utils'
 
 interface ChatMessageActionsProps extends React.ComponentProps<'div'> {
   message: Message
-  coachMessage: Message
+  coachMessage?: Message
 }
 
 export function ChatMessageActions({
   message,
-  coachMessage = { id: '', role: 'assistant', content: 'test content' },
+  coachMessage,
   className,
   ...props
 }: ChatMessageActionsProps) {
@@ -37,7 +37,7 @@ export function ChatMessageActions({
         {isCopied ? <IconCheck /> : <IconCopy />}
         <span className="sr-only">Copy message</span>
       </Button>
-      <div className="border border-red">{coachMessage.content}</div>
+      <div className="border border-red">{coachMessage?.content}</div>
     </div>
   )
 }

@@ -22,6 +22,8 @@ import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
 import { assemblyAiListener } from '@/lib/assemblyAi'
 import { playText } from '@/lib/elevenLabs'
+import { nanoid } from 'nanoid'
+import { CreateMessage } from 'ai'
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 export interface ChatProps extends React.ComponentProps<'div'> {
@@ -58,12 +60,42 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       }
     })
 
+  const coachChat = useChat({
+    initialMessages: [
+      {
+        id: 's1',
+        role: 'system',
+        content: `You listen to a chat between a customer of an insurance company "Zurich Insurance" and an Insurance Advisor - an employee of this company, who is training to be more empathetic and understanding towards customers. Please give feedback on their responses to customers in the following format.
+
+Score:
+Feedback:
+Try This Instead:`
+      }
+    ],
+    async onFinish(m) {
+      // await playText(m.content)
+      finishCallbackRef.current()
+    }
+  })
+
+  const appendExtended = (message: CreateMessage) => {
+    const customer = messages.at(-1)?.content // last message from customer
+    const advisor = message.content
+    coachChat.append({
+      id: nanoid(),
+      role: 'user',
+      content: `Customer: ${customer}\n\nInsurance Advisor: ${advisor}`
+    }) // add to coach chat
+
+    append(message) // add to main chat
+  }
+
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
         {messages.length ? (
           <>
-            <ChatList messages={messages} />
+            <ChatList messages={messages} coachMessages={coachChat.messages} />
             <ChatScrollAnchor trackVisibility={isLoading} />
           </>
         ) : (
@@ -75,7 +107,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         id={id}
         isLoading={isLoading}
         stop={stop}
-        append={append}
+        append={appendExtended}
         reload={reload}
         messages={messages}
         input={input}
