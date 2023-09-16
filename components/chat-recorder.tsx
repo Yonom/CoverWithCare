@@ -39,14 +39,19 @@ export function ChatRecorder({
     <IconMicrophone
       className={cn(
         'w-5 h-5',
-        isStarted ? '' : 'cursor-pointer',
+        isStarted && isPaused ? '' : 'cursor-pointer',
         isStarted && isPaused && 'text-gray-500',
         isStarted && !isPaused && 'text-green-500'
       )}
       onClick={() => {
-        if (isStarted) return
-        setIsStarted(true)
-        recorderRef.current.startRecording()
+        if (isStarted && isPaused) return
+        if (isStarted) {
+          setIsStarted(false)
+          recorderRef.current.pauseRecording()
+        } else {
+          setIsStarted(true)
+          recorderRef.current.startRecording()
+        }
       }}
     />
   )
