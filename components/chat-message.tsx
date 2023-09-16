@@ -95,7 +95,9 @@ export function ChatMessage({
               }
             }}
           >
-            {message.content}
+            {message.content
+              .replace('Insurance Advisor: ', '')
+              .replace('Customer: ', '')}
           </MemoizedReactMarkdown>
           <ChatMessageActions message={message} coachMessage={coachMessage} />
         </div>

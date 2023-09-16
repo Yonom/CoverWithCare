@@ -74,16 +74,16 @@ export function Chat({
     }
   })
 
-  const appendExtended = (message: CreateMessage) => {
+  const appendExtended = async (message: CreateMessage) => {
     const customer = messages.at(-1)?.content // last message from customer
     const advisor = message.content
     coachChat.append({
       id: nanoid(),
       role: 'user',
-      content: `Customer: ${customer}\n\nInsurance Advisor: ${advisor}`
-    }) // add to coach chat
+      content: `${customer}\n\n${advisor}`
+    }) // add to coach chat, do not await this
 
-    append(message) // add to main chat
+    await append(message) // add to main chat
   }
 
   return (
@@ -102,10 +102,7 @@ export function Chat({
       <ChatPanel
         id={id}
         isLoading={isLoading}
-        stop={stop}
         append={appendExtended}
-        reload={reload}
-        messages={messages}
         input={input}
         setInput={setInput}
         finishCallbackRef={finishCallbackRef}

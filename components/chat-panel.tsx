@@ -11,22 +11,19 @@ import { CreateMessage, Message } from 'ai'
 export interface ChatPanelProps
   extends Pick<
     UseChatHelpers,
-    'isLoading' | 'reload' | 'messages' | 'stop' | 'input' | 'setInput'
+    'isLoading' | 'input' | 'setInput'
   > {
   id?: string
-  append: (message: CreateMessage) => void
+  append: (message: CreateMessage) => Promise<void>
   finishCallbackRef: MutableRefObject<() => void>
 }
 
 export function ChatPanel({
   id,
   isLoading,
-  stop,
   append,
-  reload,
   input,
   setInput,
-  messages,
   finishCallbackRef
 }: ChatPanelProps) {
   return (
@@ -61,7 +58,7 @@ export function ChatPanel({
             onSubmit={async value => {
               await append({
                 id,
-                content: value,
+                content: 'Insurance Advisor: ' + value,
                 role: 'user'
               })
             }}
