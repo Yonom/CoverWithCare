@@ -1,4 +1,6 @@
 export const coachMessageParser = (msg: string) => {
+  if (!msg) return null
+
   try {
     const regex =
       /Score: (?<score>[1-5])\s+Feedback: (?<feedback>.*)\s+Try This Instead: (?<tti>.*)/gim

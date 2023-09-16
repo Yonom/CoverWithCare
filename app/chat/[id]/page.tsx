@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import { auth } from '@/auth'
 import { getChat } from '@/app/actions'
 import { Chat } from '@/components/chat'
+import { initialCoachMessages } from '@/app/page'
 
 export const runtime = 'edge'
 export const preferredRegion = 'home'
@@ -46,5 +47,16 @@ export default async function ChatPage({ params }: ChatPageProps) {
     notFound()
   }
 
-  return <Chat id={chat.id} initialMessages={chat.messages} />
+  return (
+    <Chat
+      id={chat.id}
+      initialMessages={chat.messages}
+      initialCoachMessages={[
+        ...initialCoachMessages,
+        ...chat.messages
+          .filter(c => c.role === 'user')
+          .map(c => ({ ...c, content: '' }))
+      ]}
+    />
+  )
 }

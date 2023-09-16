@@ -106,7 +106,7 @@ const assemblyAi = ({
   }
 }
 
-const messageRepetitionThreshold = 500
+const messageRepetitionThreshold = 1000
 
 type AssemblyAiListenerParams = {
   onInput: (text: string) => void

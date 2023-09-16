@@ -31,7 +31,7 @@ const initialMessages: Message[] = [
   }
 ]
 
-const initialCoachMessages: Message[] = [
+export const initialCoachMessages: Message[] = [
   {
     id: nanoid(),
     role: 'system',
