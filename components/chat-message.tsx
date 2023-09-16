@@ -105,7 +105,7 @@ export function ChatMessage({
             className={cn(
               'border ml-2 p-2',
               coachMsg.score === 5 && 'border-green-500 bg-green-300',
-              coachMsg.score === 4 && 'border-blue-500 bg-blue-300',
+              coachMsg.score === 4 && 'border-green-500 bg-green-300',
               coachMsg.score === 3 && 'border-yellow-500 bg-yellow-200',
               coachMsg.score === 2 && 'border-orange-500 bg-orange-200',
               coachMsg.score === 1 && 'border-red-500 bg-red-300',
@@ -113,7 +113,7 @@ export function ChatMessage({
             )}
           >
             {coachMsg.feedback}
-            {(coachMsg.score ?? Infinity) <= 4 && (
+            {(coachMsg.score ?? Infinity) < 4 && (
               <>
                 <br />
                 <Button

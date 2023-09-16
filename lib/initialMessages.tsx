@@ -22,7 +22,7 @@ export const initialMessages: Message[] = [
   },
   {
     id: nanoid(),
-    content: 'Customer: Hi, my house burned down!',
+    content: 'Customer: Hello. My house burned down yesterday. I don\'t know what to do now...',
     createdAt: new Date(),
     role: 'assistant'
   }
