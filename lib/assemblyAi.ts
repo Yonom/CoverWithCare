@@ -50,10 +50,10 @@ const assemblyAi = ({
 
   let started = false
   let paused = true
-  const setPaused = (paused: boolean) => {
-    if (paused === paused) return
-    paused = paused
-    onRecordingStatusChange(paused)
+  const setPaused = (newPaused: boolean) => {
+    if (paused === newPaused) return
+    paused = newPaused
+    onRecordingStatusChange(newPaused)
   }
   return {
     startRecording: async () => {
