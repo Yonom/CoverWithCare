@@ -11,6 +11,9 @@ import { MemoizedReactMarkdown } from '@/components/markdown'
 import { IconOpenAI, IconUser } from '@/components/ui/icons'
 import { ChatMessageActions } from '@/components/chat-message-actions'
 import { coachMessageParser } from '../lib/coachMessageParser'
+import { Button, type ButtonProps } from '@/components/ui/button'
+import { IconArrowDown } from '@/components/ui/icons'
+import { useState } from 'react'
 
 export interface ChatMessageProps {
   message: Message
@@ -22,13 +25,15 @@ export function ChatMessage({
   coachMessage,
   ...props
 }: ChatMessageProps) {
+  const [showTti, setShowTti] = useState(false)
+
   const coachMsg = coachMessage
     ? coachMessageParser(coachMessage.content)
     : null
 
   return (
-    <div>
-      <div
+    <div className='relative'>
+      <div 
         className={cn('group relative mb-4 flex items-start md:-ml-12')}
         {...props}
       >
@@ -99,18 +104,43 @@ export function ChatMessage({
       </div>
 
       {!!coachMsg && (
-        <div
-          className={cn(
-            'border ml-2 p-2',
-            coachMsg.score === 5 && 'border-green-500',
-            coachMsg.score === 4 && 'border-blue-500',
-            coachMsg.score === 3 && 'border-yellow-500',
-            coachMsg.score === 2 && 'border-orange-500',
-            coachMsg.score === 1 && 'border-red-500',
-            coachMsg.score === null && 'border-gray-500'
-          )}
-        >
-          {coachMsg.feedback}
+        <div className='2xl:absolute 2xl:left-full 2xl:w-[400px] 2xl:top-0'>
+          <div
+            className={cn(
+              'border ml-2 p-2',
+              coachMsg.score === 5 && 'border-green-500 bg-green-300',
+              coachMsg.score === 4 && 'border-blue-500 bg-blue-300',
+              coachMsg.score === 3 && 'border-yellow-500 bg-yellow-200',
+              coachMsg.score === 2 && 'border-orange-500 bg-orange-200',
+              coachMsg.score === 1 && 'border-red-500 bg-red-300',
+              coachMsg.score === null && 'border-gray-500'
+            )}
+          >
+            {coachMsg.feedback}
+          {
+            coachMsg.score < 4 && 
+            <Button
+              variant="outline"
+              size="icon"
+              className={cn(
+                'right-4 bottom-0 z-10 bg-background transition-opacity duration-300 sm:right-8 md:top-2',
+              )}
+              onClick={() => setShowTti(!showTti)}
+            >
+              <IconArrowDown />
+              <span className="sr-only">Scroll to bottom</span>
+            </Button>
+          }
+          </div>
+          
+          { showTti && 
+            <div
+            className={cn(
+              'border ml-2 p-2')}>
+                Try this instead: <br/>
+                {coachMsg.tti}
+            </div> 
+          }
         </div>
       )}
     </div>
