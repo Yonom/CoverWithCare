@@ -4,7 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import { auth } from '@/auth'
 import { getChat } from '@/app/actions'
 import { Chat } from '@/components/chat'
-import { initialCoachMessages } from '@/app/page'
+import { initialCoachMessages } from '@/lib/initialMessages'
 
 export const runtime = 'edge'
 export const preferredRegion = 'home'
