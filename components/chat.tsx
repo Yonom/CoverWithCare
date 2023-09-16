@@ -21,6 +21,7 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
 import { assemblyAiListener } from '@/lib/assemblyAi'
+import { playText } from '@/lib/elevenLabs'
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 export interface ChatProps extends React.ComponentProps<'div'> {
@@ -37,6 +38,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW)
   const [previewTokenInput, setPreviewTokenInput] = useState(previewToken ?? '')
 
+  const finishCallback = useRef(() => {})
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
       initialMessages,
@@ -49,6 +51,10 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         if (response.status === 401) {
           toast.error(response.statusText)
         }
+      },
+      async onFinish(m) {
+        await playText(m.content)
+        finishCallback.current()
       }
     })
 
@@ -60,6 +66,9 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       onInputComplete: async t => {
         setInput('')
         await append({ id, content: t, role: 'user' })
+        await new Promise<void>(r => {
+          finishCallback.current = r
+        })
       }
     }))
     recorder.startRecording()
