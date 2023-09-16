@@ -76,7 +76,7 @@ const assemblyAi = ({ onInput, onInputComplete }: AssemblyAiParams) => {
 
             // audio data must be sent as a base64 encoded string
             if (
-              socket.readyState === WebSocket.OPEN &&
+              socket?.readyState === WebSocket.OPEN &&
               typeof base64data === 'string'
             ) {
               socket.send(

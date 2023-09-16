@@ -50,6 +50,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </div>
           <TailwindIndicator />
         </Providers>
+        <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
       </body>
     </html>
   )

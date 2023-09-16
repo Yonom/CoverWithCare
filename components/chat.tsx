@@ -16,10 +16,11 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
+import { assemblyAiListener } from '@/lib/assemblyAi'
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 export interface ChatProps extends React.ComponentProps<'div'> {
@@ -32,8 +33,10 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     'ai-token',
     null
   )
+
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW)
   const [previewTokenInput, setPreviewTokenInput] = useState(previewToken ?? '')
+
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
       initialMessages,
@@ -48,6 +51,20 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         }
       }
     })
+
+  const recorderRef = useRef<any>()
+  useEffect(() => {
+    if (recorderRef.current) return
+    const recorder = (recorderRef.current = assemblyAiListener({
+      onInput: t => setInput(t),
+      onInputComplete: async t => {
+        setInput('')
+        await append({ id, content: t, role: 'user' })
+      }
+    }))
+    recorder.startRecording()
+  }, [])
+
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -60,6 +77,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           <EmptyScreen setInput={setInput} />
         )}
       </div>
+
       <ChatPanel
         id={id}
         isLoading={isLoading}
