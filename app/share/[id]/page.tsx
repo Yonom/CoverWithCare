@@ -15,15 +15,15 @@ interface SharePageProps {
   }
 }
 
-export async function generateMetadata({
-  params
-}: SharePageProps): Promise<Metadata> {
-  const chat = await getSharedChat(params.id)
+// export async function generateMetadata({
+//   params
+// }: SharePageProps): Promise<Metadata> {
+//   const chat = await getSharedChat(params.id)
 
-  return {
-    title: chat?.title.slice(0, 50) ?? 'Chat'
-  }
-}
+//   return {
+//     title: chat?.title.slice(0, 50) ?? 'Chat'
+//   }
+// }
 
 export default async function SharePage({ params }: SharePageProps) {
   const chat = await getSharedChat(params.id)

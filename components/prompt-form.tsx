@@ -50,7 +50,7 @@ export function PromptForm({
       }}
       ref={formRef}
     >
-      <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background px-8 sm:rounded-md sm:border sm:px-12">
+      <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background pr-8 sm:rounded-md sm:border sm:pr-12">
         <Textarea
           ref={inputRef}
           tabIndex={0}
@@ -69,19 +69,14 @@ export function PromptForm({
             finishCallbackRef={finishCallbackRef}
           />
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="submit"
-                size="icon"
-                disabled={isLoading || input === ''}
-              >
-                <IconArrowElbow />
-                <span className="sr-only">Send message</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Send message</TooltipContent>
-          </Tooltip>
+          <Button
+            type="submit"
+            size="icon"
+            disabled={isLoading || input === ''}
+          >
+            <IconArrowElbow />
+            <span className="sr-only">Send message</span>
+          </Button>
         </div>
       </div>
     </form>

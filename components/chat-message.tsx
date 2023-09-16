@@ -32,12 +32,12 @@ export function ChatMessage({
     : null
 
   return (
-    <div className='relative'>
-      <div 
+    <div className="relative">
+      <div
         className={cn('group relative mb-4 flex items-start md:-ml-12')}
         {...props}
       >
-        {message.role === 'user' ? <IconUser /> : <div/>}
+        {message.role === 'user' ? <IconUser /> : <div />}
         <div
           className="flex-1 px-1 ml-4 space-y-2 overflow-hidden"
           style={{
@@ -51,11 +51,7 @@ export function ChatMessage({
             remarkPlugins={[remarkGfm, remarkMath]}
             components={{
               p({ children }) {
-                return (
-                  <p className="mb-2 last:mb-0">
-                    {children}
-                  </p>
-                )
+                return <p className="mb-2 last:mb-0">{children}</p>
               },
               code({ node, inline, className, children, ...props }) {
                 if (children.length) {
@@ -98,13 +94,11 @@ export function ChatMessage({
           <ChatMessageActions message={message} coachMessage={coachMessage} />
         </div>
 
-        <div>
-          {message.role === 'user' ? <div /> : <IconOpenAI />}
-        </div>
+        <div>{message.role === 'user' ? <div /> : <IconOpenAI />}</div>
       </div>
 
       {!!coachMsg && (
-        <div className='2xl:absolute 2xl:left-full 2xl:w-[400px] 2xl:top-0'>
+        <div className="2xl:absolute 2xl:left-full 2xl:w-[400px] 2xl:top-0">
           <div
             className={cn(
               'border ml-2 p-2',
@@ -117,30 +111,30 @@ export function ChatMessage({
             )}
           >
             {coachMsg.feedback}
-          {
-            coachMsg.score < 4 && 
-            <Button
-              variant="outline"
-              size="icon"
-              className={cn(
-                'right-4 bottom-0 z-10 bg-background transition-opacity duration-300 sm:right-8 md:top-2',
-              )}
-              onClick={() => setShowTti(!showTti)}
-            >
-              <IconArrowDown />
-              <span className="sr-only">Scroll to bottom</span>
-            </Button>
-          }
-          </div>
-          
-          { showTti && 
-            <div
-            className={cn(
-              'border ml-2 p-2')}>
-                Try this instead: <br/>
+            {(coachMsg.score ?? Infinity) <= 4 && (
+              <>
+                <br />
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className={cn(
+                    'right-4 bottom-0 z-10 bg-background transition-opacity duration-300 sm:right-8 md:top-2'
+                  )}
+                  onClick={() => setShowTti(!showTti)}
+                >
+                  <IconArrowDown />
+                  <span className="sr-only">Show Try This Instead</span>
+                </Button>
+              </>
+            )}
+            {showTti && (
+              <div>
+                <br />
+                Try this instead: <br />
                 {coachMsg.tti}
-            </div> 
-          }
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

@@ -38,7 +38,7 @@ export function ChatRecorder({
   return (
     <IconMicrophone
       className={cn(
-        'w-5 h-5',
+        'w-6 h-6',
         isStarted && isPaused ? '' : 'cursor-pointer',
         isStarted && isPaused && 'text-gray-500',
         isStarted && !isPaused && 'text-green-500'
