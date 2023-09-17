@@ -110,7 +110,7 @@ const messageRepetitionThreshold = 1000
 
 type AssemblyAiListenerParams = {
   onInput: (text: string) => void
-  onInputComplete: (text: string) => void
+  onInputComplete: (text: string) => Promise<void>
   onRecordingStatusChange: (paused: boolean) => void
 }
 
@@ -133,7 +133,7 @@ export const assemblyAiListener = ({
       try {
         await onInputComplete(buffer)
       } finally {
-        recorder.startRecording()
+        // recorder.startRecording()
         isBusy = false
         buffer = ''
       }

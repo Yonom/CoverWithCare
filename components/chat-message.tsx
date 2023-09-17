@@ -132,7 +132,7 @@ export function ChatMessage({
             {showTti && (
               <div>
                 <br />
-                Try this instead: <br />
+                <span className="font-bold">Try this instead:</span> <br />
                 {coachMsg.tti}
               </div>
             )}

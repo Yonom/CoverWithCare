@@ -61,7 +61,7 @@ export function Chat({
         }
       },
       async onFinish(m) {
-        // await playText(m.content)
+        await playText(m.content.replace('Customer: ', ''))
         finishCallbackRef.current()
       }
     })
@@ -69,7 +69,6 @@ export function Chat({
   const coachChat = useChat({
     initialMessages: initialCoachMessages,
     async onFinish(m) {
-      // await playText(m.content)
       finishCallbackRef.current()
     }
   })

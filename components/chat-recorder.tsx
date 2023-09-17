@@ -27,9 +27,9 @@ export function ChatRecorder({
         await new Promise<void>(r => {
           finishCallbackRef.current = r
         })
+        setIsStarted(false)
       },
       onRecordingStatusChange: paused => {
-        console.log('paused', paused)
         setIsPaused(paused)
       }
     })
