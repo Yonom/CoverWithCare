@@ -61,7 +61,10 @@ export function Chat({
         }
       },
       async onFinish(m) {
-        await playText(m.content.replace('Customer: ', ''))
+        const speech = m.content.replace('Customer: ', '')
+        if (speech) {
+          await playText(speech)
+        }
         finishCallbackRef.current()
       }
     })
